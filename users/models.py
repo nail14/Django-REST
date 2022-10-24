@@ -26,7 +26,7 @@ class CustomUser(models.Model):  # AbstractBaseUser, PermissionsMixin
     # class Meta:
     first_name = models.CharField(verbose_name='Имя', max_length=255)
     last_name = models.CharField(verbose_name="Фамилия", max_length=150)
-    birthday_year = models.PositiveIntegerField(blank=True, null=True)
+    birthday_year = models.PositiveIntegerField(verbose_name="День рождения", blank=True, null=True)
     email = models.EmailField(verbose_name="Почта", unique=True)
 
     # USERNAME_FIELD = 'email'
