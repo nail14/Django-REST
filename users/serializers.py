@@ -35,11 +35,5 @@ class CustomUserModelSerializer(ModelSerializer):
 #         return instance
 
 
-# class UserModelSerializer(ModelSerializer):
-#
-#     class Meta:
-#         model = MyCustomUser
-#         # fields = '__all__'
-#         fields = ('username', 'first_name', 'last_name', 'birthday_year', 'email')
-#         # exclude = ('first_name', 'last_name')
+
 
