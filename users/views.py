@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
-from .models import CustomUser
-from .serializers import CustomUserModelSerializer
+from .models import CustomUser, Biography, Book, Article
+from .serializers import CustomUserModelSerializer, BiographySerializer, BookSerializer, ArticleSerializer
 
 
 class CustomUserModelViewSet(ModelViewSet):
@@ -10,6 +10,21 @@ class CustomUserModelViewSet(ModelViewSet):
 
     # def get_queryset(self):
     #     return CustomUser.objects.get(id=1)
+
+
+class BiographyUserModelViewSet(ModelViewSet):
+    queryset = Biography.objects.all()
+    serializer_class = BiographyModelSerializer
+
+
+class BookUserModelViewSet(ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookUserModelSerializer
+
+
+class ArticleUserModelViewSet(ModelViewSet):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
 
 
 

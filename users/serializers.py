@@ -3,7 +3,7 @@ from rest_framework import serializers
 # from users.models import users
 
 
-from .models import CustomUser
+from .models import CustomUser, Book, Biography, Article
 
 
 class CustomUserModelSerializer(ModelSerializer):
@@ -14,6 +14,50 @@ class CustomUserModelSerializer(ModelSerializer):
         fields = ['first_name', 'last_name', 'birthday_year', 'email']
         # fields = ('first_name', 'last_name')
         # exclude = ('first_name', 'last_name')
+
+
+class BiographySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Biography
+        fields = ['text', 'author']
+
+
+
+class ArticleSerializer(serializers.ModelSerializer):
+    CustomUser = CustomUserModelSerializer()
+        class Meta:
+            model = Article
+            exclude = ['first_name']
+
+
+class BookSerializer(serializers.ModelSerializer):
+    CustomUser = serializers.StringRelatedField(many=True)
+    class Meta:
+        model = Book
+        fields = '__all__'
+
+author1 = CustomUser.objects.create(name='Грин', birthday_year=1880)
+serializer = CustomUserModelSerializer(CustomUser1)
+print(serializer.data) # {'id': 17, 'name': 'Грин', 'birthday_year': 1880}
+biography = Biography.objects.create(text='Некоторая биография', CustomUser=CustomUser1)
+serializer = BiographySerializer(biography)
+print(serializer.data) # {'text': 'Некоторая биография', 'author': 17}
+article = Article.objects.create(name='Некоторая статья', CustomUser=CustomUser1)
+serializer = ArticleSerializer(article)
+print(serializer.data) # {'id': 8, 'author': OrderedDict([('id', 17), ('name',
+'Грин'), ('birthday_year', 1880)])}
+CustomUser2 = CustomUser.objects.create(name='Пушкин', birthday_year=1799)
+book = Book.objects.create(name='Некоторая книга')
+book.authors.add(CustomUser1)
+book.authors.add(CustomUser2)
+book.save()
+serializer = BookSerializer(book)
+print(serializer.data) # {'id': 9, 'authors': ['Грин', 'Пушкин'], 'name':'Некоторая книга'}
+
+
+
+
+
 
 # class UserSerializer(serializers.Serializer):
 #     first_name = serializers.UUIDField()
