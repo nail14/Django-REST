@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # 'api.apps.ApiConfig',
     'users',
     'corsheaders',
+    'project',
 
 ]
 

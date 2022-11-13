@@ -14,12 +14,12 @@ class CustomUserModelViewSet(ModelViewSet):
 
 class BiographyUserModelViewSet(ModelViewSet):
     queryset = Biography.objects.all()
-    serializer_class = BiographyModelSerializer
+    serializer_class = BiographySerializer
 
 
 class BookUserModelViewSet(ModelViewSet):
     queryset = Book.objects.all()
-    serializer_class = BookUserModelSerializer
+    serializer_class = BookSerializer
 
 
 class ArticleUserModelViewSet(ModelViewSet):

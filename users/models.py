@@ -23,7 +23,7 @@ class CustomUser(models.Model):  # AbstractBaseUser, PermissionsMixin
 
 
 class Biography(models.Model):
-    text = models.TextField(blank=True,null=True)
+    text = models.TextField(blank=True, null=True)
     author = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
 
 
