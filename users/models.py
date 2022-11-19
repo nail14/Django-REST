@@ -24,14 +24,14 @@ class CustomUser(models.Model):  # AbstractBaseUser, PermissionsMixin
 
 class Biography(models.Model):
     text = models.TextField(blank=True, null=True)
-    author = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
 
 
 class Book(models.Model):
     name = models.CharField(max_length=50)
-    authors = models.ManyToManyField(CustomUser)
+    user = models.ManyToManyField(CustomUser)
 
 
 class Article(models.Model):
     name = models.CharField(max_length=32)
-    author = models.ForeignKey(CustomUser, models.PROTECT)
+    user = models.ForeignKey(CustomUser, models.PROTECT)
