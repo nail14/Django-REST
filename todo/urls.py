@@ -19,6 +19,7 @@ from rest_framework.routers import DefaultRouter
 
 from project.views import ProjectUserModelViewSet
 from users.views import CustomUserModelViewSet, BookUserModelViewSet, ArticleUserModelViewSet, BiographyUserModelViewSet
+from rest_framework.authtoken import views
 
 router = DefaultRouter()
 router.register('users', CustomUserModelViewSet)
@@ -33,4 +34,5 @@ urlpatterns = [
     path('api/auth', include('rest_framework.urls')),
     path('api/', include(router.urls)),
     path('api/project', include(router.urls)),
+    path('api-token-auth/', views.obtain_auth_token),
 ]

@@ -9,3 +9,5 @@ class BookFilter(filters.FilterSet):
     class Meta:
         model = Book
         fields = ['name', 'id']
+
+
