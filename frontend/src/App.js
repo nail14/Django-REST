@@ -6,7 +6,10 @@ import BookList from "./components/Book";
 import axios from 'axios';
 import {BrowserRouter, Route, Link, Navigate, Routes} from "react-router-dom";
 import NotFound404 from "./components/NotFound404";
+import Loginform from "./components/Auth";
 import BooksUser from "./components/BooksUser";
+import LoginForm from "./components/Auth";
+import Cookies from "universal-cookie";
 
 class App extends React.Component {
   constructor(props) {
@@ -17,16 +20,61 @@ class App extends React.Component {
     }
   }
 
-  componentDidMount() {
-      axios.get('http://127.0.0.1:8000/api/users/')
-          .then(response =>{
+  logout(){
+      this.set_token('')
+      this.setState({'books' : []})
+      this.setState({'users' : []})
+
+  }
+
+  is_auth() {
+      return !!this.state.token
+
+  }
+
+  set_token(token){
+      console.log(token)
+      const cookies = new Cookies()
+      cookies.set('token',token)
+      this.setState({'token':token},()=>this.load_data())
+
+  }
+
+  get_token_storage(){
+      const cookies = new Cookies()
+      const token = cookies.get('token')
+      this.setState({'token':token},()=>this.load_data())
+
+  }
+
+  get_token(username,password){
+      const data = {username:username,password:password}
+      axios.post('http://127.0.0.1:8000/api-token',data).then(response => {
+          this.set_token(response.data['token'])
+      }).catch(error => alert('Неверный логин или пароль'))
+  }
+
+  get_headers(){
+      let headers = {
+          'Content-Type': 'application/json'
+      }
+      if (this.is_auth()){
+          headers['Authorization'] = 'Token '+this.state.token
+      }
+      return headers
+
+  }
+
+  load_data(){
+      const headers =this.get_headers()
+      axios.get('http://127.0.0.1:8000/api/users/', {headers}).then(response =>{
               this.setState(
                   {'users': response.data
                   }
               )
           }).catch(error => console.log(error))
 
-      axios.get('http://127.0.0.1:8000/api/books/')
+      axios.get('http://127.0.0.1:8000/api/books/', {headers})
           .then(response =>{
               this.setState(
                   {'books': response.data
@@ -34,6 +82,11 @@ class App extends React.Component {
               )
           }).catch(error => console.log(error))
 
+  }
+
+
+  componentDidMount() {
+      this.get_token_storage()
   }
 
       // const users = [
@@ -68,6 +121,7 @@ class App extends React.Component {
                 <nav>
                     <li><Link to='/users'>Users</Link></li>
                     <li><Link to='/books'>Books</Link></li>
+                    <li>{this.is_auth() ?<button onClick={() => this.logout()}>Logout</button> : <Link to='/login'>Login</Link>}</li>
                 </nav>
 
                 <Routes>
@@ -77,6 +131,8 @@ class App extends React.Component {
                         <Route path=':userId' element={<BooksUser books={this.state.books}/>}/>
                     </Route>
                     <Route exact path='/books' element={<BookList books={this.state.books}/>}/>
+                    <Route exact path='/login' element={<LoginForm get_token={(username,password) =>
+                    this.get_token(username,password)} />}/>
 
                     <Route path='*' element={<NotFound404/>}/>
                 </Routes>
