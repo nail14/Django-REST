@@ -17,3 +17,21 @@ class CustomUser(models.Model):  # AbstractBaseUser, PermissionsMixin
     last_name = models.CharField(verbose_name="Фамилия", max_length=150)
     birthday_year = models.PositiveIntegerField(verbose_name="День рождения", blank=True, null=True)
     email = models.EmailField(verbose_name="Почта", unique=True)
+
+    def __str__(self):
+        return f'{self.last_name}-{self.first_name}'
+
+
+class Biography(models.Model):
+    text = models.TextField(blank=True, null=True)
+    author = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+
+
+class Book(models.Model):
+    name = models.CharField(max_length=50)
+    authors = models.ManyToManyField(CustomUser)
+
+
+class Article(models.Model):
+    name = models.CharField(max_length=32)
+    author = models.ForeignKey(CustomUser, models.PROTECT)
