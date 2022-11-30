@@ -7,8 +7,8 @@ from .models import CustomUser, Book, Biography, Article
 class CustomUserModelSerializer(ModelSerializer):
     class Meta:
         model = CustomUser
-        # fields = '__all__'
-        fields = ['first_name', 'last_name', 'birthday_year', 'email']
+        fields = '__all__'
+        # fields = ['first_name', 'last_name', 'birthday_year', 'email']
         # fields = ('first_name', 'last_name')
         # exclude = ('first_name', 'last_name')
 
@@ -16,7 +16,8 @@ class CustomUserModelSerializer(ModelSerializer):
 class BiographySerializer(serializers.ModelSerializer):
     class Meta:
         model = Biography
-        fields = ['text', 'author']
+        fields = '__all__'
+        # fields = ['text', 'author']
 
 
 class ArticleSerializer(serializers.ModelSerializer):
