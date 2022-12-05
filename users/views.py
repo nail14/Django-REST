@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from .models import CustomUser, Biography, Book, Article
-from .serializers import CustomUserModelSerializer, BiographySerializer, BookSerializer, ArticleSerializer
+from .serializers import CustomUserModelSerializer, BiographySerializer, BookSerializer, ArticleSerializer, \
+    CustomUserBaseModelSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.permissions import BasePermission
@@ -21,6 +22,10 @@ class CustomUserModelViewSet(ModelViewSet):
 
     # def get_queryset(self):
     #     return CustomUser.objects.get(id=1)
+    def get_serializer_class(self):
+        if self.request.version == 'v2':
+            return CustomUserBaseModelSerializer
+        return CustomUserModelSerializer
 
 
 class BiographyUserModelViewSet(ModelViewSet):

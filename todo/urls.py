@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from drf_yasg import openapi
+from rest_framework.permissions import AllowAny
 from rest_framework.routers import DefaultRouter
+from rest_framework.schemas import get_schema_view
 
 from project.views import ProjectUserModelViewSet
 from users.views import CustomUserModelViewSet, BookUserModelViewSet, ArticleUserModelViewSet, BiographyUserModelViewSet
@@ -24,6 +27,20 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
     TokenVerifyView
+)
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Library",
+        default_version='v1',
+        description="Documentation to out project",
+        contact=openapi.Contact(email="admin@amail.ru"),
+        license=openapi.License(name="MIT License"),
+
+    ),
+    public=True,
+    # permission_classes=[permissions.AllowAny],
+    permission_classes=(AllowAny,),
 )
 
 router = DefaultRouter()
@@ -42,5 +59,19 @@ urlpatterns = [
     path('api-token-auth/', views.obtain_auth_token),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    # path('api/<str:version>/users/', CustomUserModelViewSet.as_view()),
     # path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    # path('api/users/v1', include('userapp.urls', namespace='v1')),
+    # path('api/users/v2', include('userapp.urls', namespace='v2')),
+    path('swagger<str:format>/', schema_view.without_ui()),
+    path('swagger/', schema_view.with_ui('swagger')),
+    path('redoc/', schema_view.with_ui('redoc')),
+
+    # re_path(r'^swagger(?P<format>\.json|\.yaml)$',
+    # schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    # path('swagger/', schema_view.with_ui('swagger', cache_timeout=0),
+    # name='schema-swagger-ui'),
+    # path('redoc/', schema_view.with_ui('redoc', cache_timeout=0),
+    # name='schema-redoc'),
 ]
+

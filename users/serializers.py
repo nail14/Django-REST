@@ -2,6 +2,7 @@ from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 # from users.models import users
 from .models import CustomUser, Book, Biography, Article
+from django.contrib.auth.models import User
 
 
 class CustomUserModelSerializer(ModelSerializer):
@@ -11,6 +12,12 @@ class CustomUserModelSerializer(ModelSerializer):
         # fields = ['first_name', 'last_name', 'birthday_year', 'email']
         # fields = ('first_name', 'last_name')
         # exclude = ('first_name', 'last_name')
+
+
+class CustomUserBaseModelSerializer(ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('first_name',)
 
 
 class BiographySerializer(serializers.ModelSerializer):
@@ -37,6 +44,18 @@ class BookSerializer(serializers.ModelSerializer):
 
         def perform_create(self, serializer):
             serializer.save()
+
+
+class UserModelSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'email')
+
+
+class UserFullModelSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'first_name', 'last_name')
 
 # author1 = CustomUser.objects.create(name='Грин', birthday_year=1880)
 # serializer = CustomUserModelSerializer(CustomUser1)
