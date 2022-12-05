@@ -29,6 +29,7 @@ class Biography(models.Model):
 
 
 class Book(models.Model):
+    objects = None
     name = models.CharField(max_length=50)
     user = models.ManyToManyField(CustomUser)
 

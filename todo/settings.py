@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_simplejwt.token_blacklist',
     'drf_yasg',
+    "graphene_django"
 
 
 ]
@@ -68,6 +69,10 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'todo.urls'
 # ROOT_URLCONF = 'library.urls'
+
+GRAPHENE = {
+    "SCHEMA": "library.schema.schema"
+}
 
 TEMPLATES = [
     {
