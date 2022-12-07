@@ -19,6 +19,7 @@ from drf_yasg import openapi
 from rest_framework.permissions import AllowAny
 from rest_framework.routers import DefaultRouter
 from rest_framework.schemas import get_schema_view
+from graphene_django.views import GraphQLView
 
 from project.views import ProjectUserModelViewSet
 from users.views import CustomUserModelViewSet, BookUserModelViewSet, ArticleUserModelViewSet, BiographyUserModelViewSet
@@ -63,9 +64,10 @@ urlpatterns = [
     # path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     # path('api/users/v1', include('userapp.urls', namespace='v1')),
     # path('api/users/v2', include('userapp.urls', namespace='v2')),
-    path('swagger<str:format>/', schema_view.without_ui()),
-    path('swagger/', schema_view.with_ui('swagger')),
-    path('redoc/', schema_view.with_ui('redoc')),
+    # path('swagger<str:format>/', schema_view.without_ui()),
+    # path('swagger/', schema_view.with_ui('swagger')),
+    # path('redoc/', schema_view.with_ui('redoc')),
+    path("graphql/", GraphQLView.as_view(graphiql=True)),
 
     # re_path(r'^swagger(?P<format>\.json|\.yaml)$',
     # schema_view.without_ui(cache_timeout=0), name='schema-json'),
