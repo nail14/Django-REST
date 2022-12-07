@@ -1,6 +1,6 @@
 import React from 'react'
 import {useParams} from "react-router-dom";
-import book from "./Book";
+import book from "./Books";
 
 
 const BookItem = ({book}) => {
